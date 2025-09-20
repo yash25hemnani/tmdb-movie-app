@@ -1,9 +1,10 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import useFetch from "@/services/useFetch";
 import { fetchMovieDetails } from "@/services/api";
 import { icons } from "@/constants/icons";
+import { useSavedMovieStore } from "@/store/savedStore";
 
 interface MovieInfoProps {
   label: string;
@@ -27,7 +28,10 @@ const index = () => {
   const { data: movie, loading } = useFetch(() =>
     fetchMovieDetails(movieId as string)
   );
-  console.log("movie", movie);
+
+  const { savedMovies, addMovie, removeMovie } = useSavedMovieStore();
+
+  
 
   return (
     <View className="bg-primary flex-1">
@@ -50,7 +54,31 @@ const index = () => {
         </View>
 
         <View className="flex-col items-start justify-center mt-5 px-5">
-          <Text className="text-white font-bold text-xl">{movie?.title}</Text>
+          <View className="flex flex-row w-full justify-between">
+            <Text className="text-white font-bold text-xl w-[90%]">{movie?.title}</Text>
+            {savedMovies.some((m) => m.movie_id === String(movie?.id)) ? (
+              <TouchableOpacity
+                onPress={() =>
+                  removeMovie(String(movie?.id))
+                }
+              >
+                <Image source={icons.saved} className="size-7" tintColor="white"/>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+              
+                onPress={() =>
+                  addMovie({
+                    movie_id: String(movie?.id ?? ""),
+                    movie_title: movie?.title ?? "Untitled",
+                    url: movie?.poster_path ?? "",
+                  })
+                }
+              >
+                <Image source={icons.save} className="size-7" />
+              </TouchableOpacity>
+            )}
+          </View>
 
           <View className="flex-row items-center gap-x-1 mt-2">
             <Text className="text-light-200 text-sm">

@@ -86,6 +86,17 @@ const _layout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="saved"
+        options={{
+          title: "Saved",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            // Focused defines if the tab is on focus
+            <TabIcon focused={focused} label="Saved" icon={icons.save} />
+          ),
+        }}
+      />
 
 
     </Tabs>

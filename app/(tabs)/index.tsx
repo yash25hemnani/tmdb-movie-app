@@ -18,10 +18,6 @@ export default function Index() {
     loading: trendingLoading,
     error: trendingError,
   } = useFetch(getTrendingMovies);
-  console.log(
-    "Index",
-    trendingMovies?.map((mov) => console.log(mov.movie_id))
-  );
 
   // Fetch movies from API using custom hook
   const {
@@ -100,7 +96,7 @@ export default function Index() {
 
             {trendingMovies && (
               <View className="mt-4">
-                <Text className="text-lg text-white font-bold">
+                <Text className="text-lg text-white font-bold mb-2">
                   Trending Movies
                 </Text>
 
